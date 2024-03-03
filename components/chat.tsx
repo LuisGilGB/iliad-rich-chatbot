@@ -1,6 +1,6 @@
 'use client'
 
-import { useChat, type Message } from 'ai/react'
+import { type Message, useChat } from 'ai/react'
 
 import { cn } from '@/lib/utils'
 import { ChatList } from '@/components/chat-list'
@@ -35,8 +35,10 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     'ai-token',
     null
   )
+
   const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW)
   const [previewTokenInput, setPreviewTokenInput] = useState(previewToken ?? '')
+
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
       initialMessages,
@@ -56,6 +58,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         }
       }
     })
+
   return (
     <>
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
