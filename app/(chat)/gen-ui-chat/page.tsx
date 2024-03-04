@@ -13,7 +13,7 @@ export default function Page() {
     <div>
       {
         // View messages in UI state
-        messages.map((message: typeof AI) => (
+        messages.map(message => (
           <div key={message.id}>{message.display}</div>
         ))
       }
@@ -23,7 +23,7 @@ export default function Page() {
           e.preventDefault()
 
           // Add user message to UI state
-          setMessages((currentMessages: (typeof AI)[]) => [
+          setMessages(currentMessages => [
             ...currentMessages,
             {
               id: Date.now(),
@@ -33,10 +33,7 @@ export default function Page() {
 
           // Submit and get response message
           const responseMessage = await submitUserMessage(inputValue)
-          setMessages((currentMessages: (typeof AI)[]) => [
-            ...currentMessages,
-            responseMessage
-          ])
+          setMessages(currentMessages => [...currentMessages, responseMessage])
 
           setInputValue('')
         }}
