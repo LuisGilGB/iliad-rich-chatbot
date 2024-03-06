@@ -1,10 +1,10 @@
-import { kv } from '@vercel/kv'
-import { OpenAIStream, StreamingTextResponse } from 'ai'
-import OpenAI from 'openai'
+import config from '@/app/config'
+import { openai } from '@/app/openai'
 
 import { auth } from '@/auth'
 import { nanoid } from '@/lib/utils'
-import {openai} from "@/app/openai";
+import { kv } from '@vercel/kv'
+import { OpenAIStream, StreamingTextResponse } from 'ai'
 
 export const runtime = 'edge'
 
@@ -50,11 +50,13 @@ export async function POST(req: Request) {
           }
         ]
       }
-      await kv.hmset(`chat:${id}`, payload)
-      await kv.zadd(`user:chat:${userId}`, {
-        score: createdAt,
-        member: `chat:${id}`
-      })
+      if (config.USE_KV) {
+        await kv.hmset(`chat:${id}`, payload)
+        await kv.zadd(`user:chat:${userId}`, {
+          score: createdAt,
+          member: `chat:${id}`
+        })
+      }
     }
   })
 

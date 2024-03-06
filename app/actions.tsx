@@ -1,16 +1,20 @@
 'use server'
 
+import config from '@/app/config'
+import { openai } from '@/app/openai'
+import { auth } from '@/auth'
+import { type Chat } from '@/lib/types'
+import { kv } from '@vercel/kv'
+
 import { createAI, getMutableAIState, render } from 'ai/rsc'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { kv } from '@vercel/kv'
-
-import { auth } from '@/auth'
-import { type Chat } from '@/lib/types'
-import { openai } from '@/app/openai'
 import { z } from 'zod'
 
 export async function getChats(userId?: string | null) {
+  if (!config.USE_KV) {
+    return []
+  }
   if (!userId) {
     return []
   }
@@ -34,6 +38,9 @@ export async function getChats(userId?: string | null) {
 }
 
 export async function getChat(id: string, userId: string) {
+  if (!config.USE_KV) {
+    return null
+  }
   const chat = await kv.hgetall<Chat>(`chat:${id}`)
 
   if (!chat || (userId && chat.userId !== userId)) {
@@ -44,6 +51,10 @@ export async function getChat(id: string, userId: string) {
 }
 
 export async function removeChat({ id, path }: { id: string; path: string }) {
+  if (!config.USE_KV) {
+    return
+  }
+
   const session = await auth()
 
   if (!session) {
@@ -69,6 +80,9 @@ export async function removeChat({ id, path }: { id: string; path: string }) {
 }
 
 export async function clearChats() {
+  if (!config.USE_KV) {
+    return
+  }
   const session = await auth()
 
   if (!session?.user?.id) {
@@ -95,6 +109,9 @@ export async function clearChats() {
 }
 
 export async function getSharedChat(id: string) {
+  if (!config.USE_KV) {
+    return null
+  }
   const chat = await kv.hgetall<Chat>(`chat:${id}`)
 
   if (!chat || !chat.sharePath) {
@@ -105,6 +122,9 @@ export async function getSharedChat(id: string) {
 }
 
 export async function shareChat(id: string) {
+  if (!config.USE_KV) {
+    return null
+  }
   const session = await auth()
 
   if (!session?.user?.id) {
