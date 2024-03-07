@@ -16,7 +16,7 @@ export const {
 } = NextAuth({
   providers: [GitHub],
   callbacks: {
-    jwt({ token, profile }) {
+    jwt: function ({ token, profile }) {
       if (profile) {
         token.id = profile.id
         token.image = profile.avatar_url || profile.picture
@@ -29,7 +29,7 @@ export const {
       }
       return session
     },
-    authorized({ auth }) {
+    authorized: function ({ auth }) {
       return !!auth?.user // this ensures there is a logged in user for -every- request
     }
   },

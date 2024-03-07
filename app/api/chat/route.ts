@@ -11,12 +11,15 @@ export const runtime = 'edge'
 export async function POST(req: Request) {
   const json = await req.json()
   const { messages, previewToken } = json
-  const userId = (await auth())?.user.id
+  let userId: string | undefined
+  if (config.USE_AUTH && !previewToken) {
+    userId = (await auth())?.user.id
 
-  if (!userId) {
-    return new Response('Unauthorized', {
-      status: 401
-    })
+    if (!userId) {
+      return new Response('Unauthorized', {
+        status: 401
+      })
+    }
   }
 
   if (previewToken) {
