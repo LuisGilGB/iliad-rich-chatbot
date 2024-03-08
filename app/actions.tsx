@@ -1,23 +1,23 @@
-'use server'
+'use server';
 
-import { openai } from '@/app/openai'
+import { openai } from '@/app/openai';
 
-import { createAI, getMutableAIState, render } from 'ai/rsc'
-import { z } from 'zod'
+import { createAI, getMutableAIState, render } from 'ai/rsc';
+import { z } from 'zod';
 
 async function submitUserMessage(userInput: string) {
-  'use server'
+  'use server';
 
-  const aiState = getMutableAIState<typeof AI>()
+  const aiState = getMutableAIState<typeof AI>();
 
   // Update AI state with new message.
   aiState.update([
     ...aiState.get(),
     {
       role: 'user',
-      content: userInput
-    }
-  ])
+      content: userInput,
+    },
+  ]);
 
   // render() returns a stream of UI components
   const ui = render({
@@ -27,12 +27,12 @@ async function submitUserMessage(userInput: string) {
       {
         role: 'system',
         content:
-          'Hi! I can give you information about who is who in The Iliad. Ask me anything!'
+          'Hi! I can give you information about who is who in The Iliad. Ask me anything!',
       },
       {
         role: 'user',
-        content: userInput
-      }
+        content: userInput,
+      },
     ],
     // `text` is called when an AI returns a text response (as opposed to a tool call)
     text: ({ content, done }: { content: string; done: boolean }) => {
@@ -43,9 +43,9 @@ async function submitUserMessage(userInput: string) {
           ...aiState.get(),
           {
             role: 'assistant',
-            content
-          }
-        ])
+            content,
+          },
+        ]);
       }
 
       return (
@@ -53,7 +53,7 @@ async function submitUserMessage(userInput: string) {
           <h5 className="text-white">AI Response</h5>
           <p className="text-white">{content}</p>
         </div>
-      )
+      );
     },
     tools: {
       get_character_info: {
@@ -69,8 +69,8 @@ async function submitUserMessage(userInput: string) {
             survives: z
               .boolean()
               .describe(
-                'Whether the character survives until the end of the poem'
-              )
+                'Whether the character survives until the end of the poem',
+              ),
           })
           .required(),
         render: async function* ({
@@ -78,28 +78,28 @@ async function submitUserMessage(userInput: string) {
           side,
           origin,
           father,
-          survives
+          survives,
         }: {
-          name: string
-          side: 'Greek' | 'Trojan'
-          origin: string
-          father: string
-          survives: boolean
+          name: string;
+          side: 'Greek' | 'Trojan';
+          origin: string;
+          father: string;
+          survives: boolean;
         }) {
           yield (
             <div className="p-2 bg-gray-500 rounded-md w-48 h-16">
               <p>Loading...</p>
             </div>
-          )
+          );
 
           aiState.done([
             ...aiState.get(),
             {
               role: 'function',
               name: 'get_character_info',
-              content: JSON.stringify({ name, side, origin, father, survives })
-            }
-          ])
+              content: JSON.stringify({ name, side, origin, father, survives }),
+            },
+          ]);
 
           return (
             <div className="p-2 bg-gray-900 space-y-2 rounded-md">
@@ -113,39 +113,39 @@ async function submitUserMessage(userInput: string) {
                 </p>
               </div>
             </div>
-          )
-        }
-      }
-    }
-  })
+          );
+        },
+      },
+    },
+  });
 
   return {
     id: Date.now(),
-    display: ui
-  }
+    display: ui,
+  };
 }
 
 // Define the initial state of the AI. It can be any JSON object.
 const initialAIState: {
-  role: 'user' | 'assistant' | 'system' | 'function'
-  content: string
-  id?: string
-  name?: string
-}[] = []
+  role: 'user' | 'assistant' | 'system' | 'function';
+  content: string;
+  id?: string;
+  name?: string;
+}[] = [];
 
 // The initial UI state that the client will keep track of.
 const initialUIState: {
-  id: number
-  display: React.ReactNode
-}[] = []
+  id: number;
+  display: React.ReactNode;
+}[] = [];
 
 // AI is a provider you wrap your application with so you can access AI and UI state in your components.
 export const AI = createAI({
   actions: {
-    submitUserMessage
+    submitUserMessage,
   },
   // Each state can be any shape of object, but for chat applications
   // it makes sense to have an array of messages. Or you may prefer something like { id: number, messages: Message[] }
   initialUIState,
-  initialAIState
-})
+  initialAIState,
+});

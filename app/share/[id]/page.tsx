@@ -1,32 +1,32 @@
-import { ChatList } from '@/components/chat-list'
-import { FooterText } from '@/components/footer'
-import { getSharedChat } from '@/infrastructure/repositories/chat.repository'
+import { ChatList } from '@/components/ChatList';
+import { FooterText } from '@/components/footer';
+import { getSharedChat } from '@/infrastructure/repositories/chat.repository';
 
-import { formatDate } from '@/lib/utils'
-import { type Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { formatDate } from '@/lib/utils';
+import { type Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 interface SharePageProps {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
 export async function generateMetadata({
-  params
+  params,
 }: SharePageProps): Promise<Metadata> {
-  const chat = await getSharedChat(params.id)
+  const chat = await getSharedChat(params.id);
 
   return {
-    title: chat?.title.slice(0, 50) ?? 'Chat'
-  }
+    title: chat?.title.slice(0, 50) ?? 'Chat',
+  };
 }
 
 export default async function SharePage({ params }: SharePageProps) {
-  const chat = await getSharedChat(params.id)
+  const chat = await getSharedChat(params.id);
 
   if (!chat || !chat?.sharePath) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -46,5 +46,5 @@ export default async function SharePage({ params }: SharePageProps) {
       </div>
       <FooterText className="py-8" />
     </>
-  )
+  );
 }

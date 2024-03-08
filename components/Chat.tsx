@@ -1,63 +1,80 @@
-'use client'
+'use client';
 
-import { type Message, useChat } from 'ai/react'
-
-import { cn } from '@/lib/utils'
-import { ChatList } from '@/components/chat-list'
-import { ChatPanel } from '@/components/chat-panel'
-import { EmptyScreen } from '@/components/empty-screen'
-import { ChatScrollAnchor } from '@/components/chat-scroll-anchor'
-import { useLocalStorage } from '@/lib/hooks/use-local-storage'
+import { AI } from '@/app/actions';
+import { ChatScrollAnchor } from '@/components/chat-scroll-anchor';
+import { ChatList } from '@/components/ChatList';
+import { ChatPanel } from '@/components/ChatPanel';
+import { EmptyScreen } from '@/components/empty-screen';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog'
-import { useState } from 'react'
-import { Button } from './ui/button'
-import { Input } from './ui/input'
-import { toast } from 'react-hot-toast'
-import { usePathname, useRouter } from 'next/navigation'
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { useLocalStorage } from '@/lib/hooks/use-local-storage';
 
-const IS_PREVIEW = process.env.VERCEL_ENV === 'preview'
+import { cn } from '@/lib/utils';
+import { type Message, useChat } from 'ai/react';
+import { useActions, useUIState } from 'ai/rsc';
+import { usePathname, useRouter } from 'next/navigation';
+import { useCallback, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+
+const IS_PREVIEW = process.env.VERCEL_ENV === 'preview';
 export interface ChatProps extends React.ComponentProps<'div'> {
-  initialMessages?: Message[]
-  id?: string
+  initialMessages?: Message[];
+  id?: string;
 }
 
 export function Chat({ id, initialMessages, className }: ChatProps) {
-  const router = useRouter()
-  const path = usePathname()
+  const router = useRouter();
+  const path = usePathname();
   const [previewToken, setPreviewToken] = useLocalStorage<string | null>(
     'ai-token',
-    null
-  )
+    null,
+  );
+  const { submitUserMessage } = useActions<typeof AI>();
 
-  const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW)
-  const [previewTokenInput, setPreviewTokenInput] = useState(previewToken ?? '')
+  const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW);
+  const [previewTokenInput, setPreviewTokenInput] = useState(
+    previewToken ?? '',
+  );
 
-  const { messages, append, reload, stop, isLoading, input, setInput } =
-    useChat({
-      initialMessages,
+  const { reload, stop, isLoading, input, setInput } = useChat({
+    initialMessages,
+    id,
+    body: {
       id,
-      body: {
-        id,
-        previewToken
-      },
-      onResponse(response) {
-        if (response.status === 401) {
-          toast.error(response.statusText)
-        }
-      },
-      onFinish() {
-        if (!path.includes('chat')) {
-          window.history.pushState({}, '', `/chat/${id}`)
-        }
+      previewToken,
+    },
+    onResponse(response) {
+      if (response.status === 401) {
+        toast.error(response.statusText);
       }
-    })
+    },
+    onFinish() {
+      if (!path.includes('chat')) {
+        window.history.pushState({}, '', `/chat/${id}`);
+      }
+    },
+  });
+
+  const [rawMessages, setMessages] = useUIState<typeof AI>();
+  const messages = rawMessages.map(message => ({
+    ...message,
+    id: message.id.toString(),
+    content: 'Content', // DELETE ME
+    role: 'user' as 'user',
+  }));
+
+  const onSubmit = useCallback(
+    (message: string) => submitUserMessage(message),
+    [submitUserMessage],
+  );
 
   return (
     <>
@@ -75,11 +92,11 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         id={id}
         isLoading={isLoading}
         stop={stop}
-        append={append}
         reload={reload}
         messages={messages}
         input={input}
         setInput={setInput}
+        onSubmit={onSubmit}
       />
 
       <Dialog open={previewTokenDialog} onOpenChange={setPreviewTokenDialog}>
@@ -108,8 +125,8 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
           <DialogFooter className="items-center">
             <Button
               onClick={() => {
-                setPreviewToken(previewTokenInput)
-                setPreviewTokenDialog(false)
+                setPreviewToken(previewTokenInput);
+                setPreviewTokenDialog(false);
               }}
             >
               Save Token
@@ -118,5 +135,5 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         </DialogContent>
       </Dialog>
     </>
-  )
+  );
 }
