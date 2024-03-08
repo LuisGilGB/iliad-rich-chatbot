@@ -1,5 +1,5 @@
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
-import { ChatShareDialog } from '@/components/chat-share-dialog';
+import { ChatShareDialog } from '@/components/chat/ChatShareDialog';
 import { FooterText } from '@/components/footer';
 import { PromptForm } from '@/components/prompt-form';
 

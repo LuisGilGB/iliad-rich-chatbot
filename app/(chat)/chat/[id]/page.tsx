@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { Chat } from '@/components/Chat';
+import { Chat } from '@/components/chat/Chat';
 import { getChat } from '@/infrastructure/repositories/chat.repository';
 import { type Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';

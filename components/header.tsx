@@ -1,21 +1,21 @@
-import { auth } from '@/auth'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { auth } from '@/auth';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
   IconGitHub,
   IconNextChat,
   IconSeparator,
-  IconVercel
-} from '@/components/ui/icons'
-import { UserMenu } from '@/components/user-menu'
-import { cn } from '@/lib/utils'
-import Link from 'next/link'
-import * as React from 'react'
-import { ChatHistory } from './chat-history'
-import { SidebarMobile } from './sidebar-mobile'
-import { SidebarToggle } from './sidebar-toggle'
+  IconVercel,
+} from '@/components/ui/icons';
+import { UserMenu } from '@/components/user-menu';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import * as React from 'react';
+import { ChatHistory } from './chat/ChatHistory';
+import { SidebarMobile } from './sidebar-mobile';
+import { SidebarToggle } from './sidebar-toggle';
 
 async function UserOrLogin() {
-  const session = await auth()
+  const session = await auth();
   return (
     <>
       {session?.user ? (
@@ -42,7 +42,7 @@ async function UserOrLogin() {
         )}
       </div>
     </>
-  )
+  );
 }
 
 export function Header() {
@@ -74,5 +74,5 @@ export function Header() {
         </a>
       </div>
     </header>
-  )
+  );
 }

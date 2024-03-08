@@ -1,9 +1,9 @@
 'use client';
 
 import { AI } from '@/app/actions';
-import { ChatScrollAnchor } from '@/components/chat-scroll-anchor';
-import { ChatList } from '@/components/ChatList';
-import { ChatPanel } from '@/components/ChatPanel';
+import { ChatList } from '@/components/chat/ChatList';
+import { ChatPanel } from '@/components/chat/ChatPanel';
+import { ChatScrollAnchor } from '@/components/chat/ChatScrollAnchor';
 import { EmptyScreen } from '@/components/empty-screen';
 import {
   Dialog,
@@ -21,8 +21,8 @@ import { useActions, useUIState } from 'ai/rsc';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview';
 export interface ChatProps extends React.ComponentProps<'div'> {

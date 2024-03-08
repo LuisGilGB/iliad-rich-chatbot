@@ -1,4 +1,4 @@
-import { ChatList } from '@/components/ChatList';
+import { ChatList } from '@/components/chat/ChatList';
 import { FooterText } from '@/components/footer';
 import { getSharedChat } from '@/infrastructure/repositories/chat.repository';
 

@@ -1,14 +1,14 @@
-import * as React from 'react'
+import { SidebarList } from '@/components/sidebar-list';
+import { buttonVariants } from '@/components/ui/button';
+import { IconPlus } from '@/components/ui/icons';
 
-import Link from 'next/link'
+import { cn } from '@/lib/utils';
 
-import { cn } from '@/lib/utils'
-import { SidebarList } from '@/components/sidebar-list'
-import { buttonVariants } from '@/components/ui/button'
-import { IconPlus } from '@/components/ui/icons'
+import Link from 'next/link';
+import * as React from 'react';
 
 interface ChatHistoryProps {
-  userId?: string
+  userId?: string;
 }
 
 export async function ChatHistory({ userId }: ChatHistoryProps) {
@@ -16,10 +16,10 @@ export async function ChatHistory({ userId }: ChatHistoryProps) {
     <div className="flex flex-col h-full">
       <div className="px-2 my-4">
         <Link
-          href="/"
+          href="/public"
           className={cn(
             buttonVariants({ variant: 'outline' }),
-            'h-10 w-full justify-start bg-zinc-50 px-4 shadow-none transition-colors hover:bg-zinc-200/40 dark:bg-zinc-900 dark:hover:bg-zinc-300/10'
+            'h-10 w-full justify-start bg-zinc-50 px-4 shadow-none transition-colors hover:bg-zinc-200/40 dark:bg-zinc-900 dark:hover:bg-zinc-300/10',
           )}
         >
           <IconPlus className="-translate-x-2 stroke-2" />
@@ -42,5 +42,5 @@ export async function ChatHistory({ userId }: ChatHistoryProps) {
         <SidebarList userId={userId} />
       </React.Suspense>
     </div>
-  )
+  );
 }
