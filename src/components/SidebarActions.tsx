@@ -1,6 +1,5 @@
 'use client';
 
-import { ChatShareDialog } from '@/components/chat/ChatShareDialog';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -71,13 +70,15 @@ export function SidebarActions({
           <TooltipContent>Delete chat</TooltipContent>
         </Tooltip>
       </div>
-      <ChatShareDialog
-        chat={chat}
-        shareChat={shareChat}
-        open={shareDialogOpen}
-        onOpenChange={setShareDialogOpen}
-        onCopy={() => setShareDialogOpen(false)}
-      />
+      {/*
+        <ChatShareDialog
+          chat={chat}
+          shareChat={shareChat}
+          open={shareDialogOpen}
+          onOpenChange={setShareDialogOpen}
+          onCopy={() => setShareDialogOpen(false)}
+        />
+      */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>

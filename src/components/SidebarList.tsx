@@ -1,23 +1,23 @@
-import { ClearHistory } from '@/components/clear-history'
-import { SidebarItems } from '@/components/sidebar-items'
-import { ThemeToggle } from '@/components/theme-toggle'
+import { ClearHistory } from '@/components/clear-history';
+import { SidebarItems } from '@/components/SidebarItems';
+import { ThemeToggle } from '@/components/theme-toggle';
 import {
   clearChats,
-  getChats
-} from '@/infrastructure/repositories/chat.repository'
-import { cache } from 'react'
+  getChats,
+} from '@/infrastructure/repositories/chat.repository';
+import { cache } from 'react';
 
 interface SidebarListProps {
-  userId?: string
-  children?: React.ReactNode
+  userId?: string;
+  children?: React.ReactNode;
 }
 
 const loadChats = cache(async (userId?: string) => {
-  return await getChats(userId)
-})
+  return await getChats(userId);
+});
 
 export async function SidebarList({ userId }: SidebarListProps) {
-  const chats = await loadChats(userId)
+  const chats = await loadChats(userId);
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
@@ -37,5 +37,5 @@ export async function SidebarList({ userId }: SidebarListProps) {
         <ClearHistory clearChats={clearChats} isEnabled={chats?.length > 0} />
       </div>
     </div>
-  )
+  );
 }

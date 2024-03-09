@@ -1,4 +1,3 @@
-import { ChatList } from '@/components/chat/ChatList';
 import { FooterText } from '@/components/footer';
 import { getSharedChat } from '@/infrastructure/repositories/chat.repository';
 
@@ -42,7 +41,7 @@ export default async function SharePage({ params }: SharePageProps) {
             </div>
           </div>
         </div>
-        <ChatList messages={chat.messages} />
+        {/*<ChatList messages={chat.messages} />*/}
       </div>
       <FooterText className="py-8" />
     </>

@@ -1,4 +1,4 @@
-import { SidebarList } from '@/components/sidebar-list';
+import { SidebarList } from '@/components/SidebarList';
 import { buttonVariants } from '@/components/ui/button';
 import { IconPlus } from '@/components/ui/icons';
 
