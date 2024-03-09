@@ -63,7 +63,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     },
   });
 
-  const [rawMessages, setMessages] = useUIState<typeof AIProvider>();
+  const [rawMessages, setRawMessages] = useUIState<typeof AIProvider>();
   const messages = rawMessages.map(message => ({
     ...message,
     id: message.id.toString(),
@@ -72,8 +72,11 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   }));
 
   const onSubmit = useCallback(
-    (message: string) => submitUserMessage(message),
-    [submitUserMessage],
+    async (message: string) => {
+      const responseMessage = await submitUserMessage(message);
+      setRawMessages(currentMessages => [...currentMessages, responseMessage]);
+    },
+    [setRawMessages, submitUserMessage],
   );
 
   return (

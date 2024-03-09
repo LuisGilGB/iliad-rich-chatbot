@@ -1,7 +1,7 @@
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom';
 import { ChatShareDialog } from '@/components/chat/ChatShareDialog';
 import { FooterText } from '@/components/footer';
-import { PromptForm } from '@/components/prompt-form';
+import { PromptForm } from '@/components/PromptForm';
 
 import { Button } from '@/components/ui/button';
 import { IconRefresh, IconShare, IconStop } from '@/components/ui/icons';
