@@ -8,14 +8,16 @@ import { IconRefresh, IconShare, IconStop } from '@/components/ui/icons';
 import { shareChat } from '@/infrastructure/repositories/chat.repository';
 import { type UseChatHelpers } from 'ai/react';
 import * as React from 'react';
+import { ReactNode } from 'react';
 
 export interface ChatPanelProps
   extends Pick<
     UseChatHelpers,
-    'isLoading' | 'reload' | 'messages' | 'stop' | 'input' | 'setInput'
+    'isLoading' | 'reload' | 'stop' | 'input' | 'setInput'
   > {
   id?: string;
   title?: string;
+  messages: { id: number; display: ReactNode }[];
   onSubmit: (content: string) => Promise<unknown>;
 }
 

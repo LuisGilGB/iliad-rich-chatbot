@@ -2,8 +2,8 @@
 
 import { AIProvider } from '@/app/actions';
 import { ChatList } from '@/components/chat/ChatList';
+import { ChatMessage } from '@/components/chat/ChatMessage';
 import { ChatPanel } from '@/components/chat/ChatPanel';
-import { ChatScrollAnchor } from '@/components/chat/ChatScrollAnchor';
 import { EmptyScreen } from '@/components/empty-screen';
 import {
   Dialog,
@@ -16,6 +16,7 @@ import {
 import { useLocalStorage } from '@/lib/hooks/use-local-storage';
 
 import { cn } from '@/lib/utils';
+import { createNewMessage } from '@/usecases/chat.usecases';
 import { type Message, useChat } from 'ai/react';
 import { useActions, useUIState } from 'ai/rsc';
 import { usePathname, useRouter } from 'next/navigation';
@@ -23,6 +24,7 @@ import { useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { ChatScrollAnchor } from './ChatScrollAnchor';
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview';
 export interface ChatProps extends React.ComponentProps<'div'> {
@@ -63,20 +65,25 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     },
   });
 
-  const [rawMessages, setRawMessages] = useUIState<typeof AIProvider>();
-  const messages = rawMessages.map(message => ({
-    ...message,
-    id: message.id.toString(),
-    content: 'Content', // DELETE ME
-    role: 'user' as 'user',
-  }));
+  const [messages, setMessages] = useUIState<typeof AIProvider>();
 
   const onSubmit = useCallback(
     async (message: string) => {
+      const newMessage = createNewMessage({
+        role: 'user',
+        content: message,
+      });
+      setMessages(currentMessages => [
+        ...currentMessages,
+        {
+          id: Date.now(),
+          display: <ChatMessage message={newMessage} />,
+        },
+      ]);
       const responseMessage = await submitUserMessage(message);
-      setRawMessages(currentMessages => [...currentMessages, responseMessage]);
+      setMessages(currentMessages => [...currentMessages, responseMessage]);
     },
-    [setRawMessages, submitUserMessage],
+    [setMessages, submitUserMessage],
   );
 
   return (
