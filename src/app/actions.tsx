@@ -1,6 +1,12 @@
 'use server';
 
 import { openai } from '@/app/openai';
+import { ChatMessage } from '@/components/chat/ChatMessage';
+import {
+  appendMessage,
+  appendNewMessage,
+  createNewMessage,
+} from '@/usecases/chat.usecases';
 
 import { createAI, getMutableAIState, render } from 'ai/rsc';
 import { z } from 'zod';
@@ -11,13 +17,9 @@ async function submitUserMessage(userInput: string) {
   const aiState = getMutableAIState<typeof AIProvider>();
 
   // Update AI state with new message.
-  aiState.update([
-    ...aiState.get(),
-    {
-      role: 'user',
-      content: userInput,
-    },
-  ]);
+  aiState.update(
+    appendNewMessage(aiState.get(), { role: 'user', content: userInput }),
+  );
 
   // render() returns a stream of UI components
   const ui = render({
@@ -38,22 +40,12 @@ async function submitUserMessage(userInput: string) {
     text: ({ content, done }: { content: string; done: boolean }) => {
       // text can be streamed from the LLM, but we only want to close the stream with .done() when its completed.
       // done() marks the state as available for the client to access
+      const newMessage = createNewMessage({ role: 'assistant', content });
       if (done) {
-        aiState.update([
-          ...aiState.get(),
-          {
-            role: 'assistant',
-            content,
-          },
-        ]);
+        aiState.update(appendMessage(aiState.get(), newMessage));
       }
 
-      return (
-        <div className="p-2 bg-gray-900 space-y-2 rounded-md">
-          <h5 className="text-white">AI Response</h5>
-          <p className="text-white">{content}</p>
-        </div>
-      );
+      return <ChatMessage message={newMessage} />;
     },
     tools: {
       get_character_info: {
@@ -92,14 +84,13 @@ async function submitUserMessage(userInput: string) {
             </div>
           );
 
-          aiState.done([
-            ...aiState.get(),
-            {
-              role: 'function',
-              name: 'get_character_info',
+          aiState.done(
+            appendNewMessage(aiState.get(), {
+              role: 'assistant',
               content: JSON.stringify({ name, side, origin, father, survives }),
-            },
-          ]);
+              name: 'get_character_info',
+            }),
+          );
 
           return (
             <div className="p-2 bg-gray-900 space-y-2 rounded-md">
@@ -129,7 +120,7 @@ async function submitUserMessage(userInput: string) {
 const initialAIState: {
   role: 'user' | 'assistant' | 'system' | 'function';
   content: string;
-  id?: string;
+  id: string;
   name?: string;
 }[] = [];
 
