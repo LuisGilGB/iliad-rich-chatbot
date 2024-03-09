@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import { AI } from '@/app/actions'
-import { useActions, useUIState } from 'ai/rsc'
-import { useState } from 'react'
+import { AIProvider } from '@/app/actions';
+import { useActions, useUIState } from 'ai/rsc';
+import { useState } from 'react';
 
 export default function Page() {
-  const [inputValue, setInputValue] = useState('')
-  const [messages, setMessages] = useUIState<typeof AI>()
-  const { submitUserMessage } = useActions<typeof AI>()
+  const [inputValue, setInputValue] = useState('');
+  const [messages, setMessages] = useUIState<typeof AIProvider>();
+  const { submitUserMessage } = useActions<typeof AIProvider>();
 
   return (
     <div className="flex flex-col w-full max-w-[720px] mx-auto p-12">
@@ -21,36 +21,36 @@ export default function Page() {
 
         <form
           onSubmit={async e => {
-            e.preventDefault()
+            e.preventDefault();
 
             // Add user message to UI state
             setMessages(currentMessages => [
               ...currentMessages,
               {
                 id: Date.now(),
-                display: <div className="bg-green-300">{inputValue}</div>
-              }
-            ])
+                display: <div className="bg-green-300">{inputValue}</div>,
+              },
+            ]);
 
             // Submit and get response message
-            const responseMessage = await submitUserMessage(inputValue)
+            const responseMessage = await submitUserMessage(inputValue);
             setMessages(currentMessages => [
               ...currentMessages,
-              responseMessage
-            ])
+              responseMessage,
+            ]);
 
-            setInputValue('')
+            setInputValue('');
           }}
         >
           <input
             placeholder="Send a message..."
             value={inputValue}
             onChange={event => {
-              setInputValue(event.target.value)
+              setInputValue(event.target.value);
             }}
           />
         </form>
       </div>
     </div>
-  )
+  );
 }

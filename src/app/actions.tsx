@@ -8,7 +8,7 @@ import { z } from 'zod';
 async function submitUserMessage(userInput: string) {
   'use server';
 
-  const aiState = getMutableAIState<typeof AI>();
+  const aiState = getMutableAIState<typeof AIProvider>();
 
   // Update AI state with new message.
   aiState.update([
@@ -140,7 +140,7 @@ const initialUIState: {
 }[] = [];
 
 // AI is a provider you wrap your application with so you can access AI and UI state in your components.
-export const AI = createAI({
+export const AIProvider = createAI({
   actions: {
     submitUserMessage,
   },

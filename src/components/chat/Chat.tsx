@@ -1,6 +1,6 @@
 'use client';
 
-import { AI } from '@/app/actions';
+import { AIProvider } from '@/app/actions';
 import { ChatList } from '@/components/chat/ChatList';
 import { ChatPanel } from '@/components/chat/ChatPanel';
 import { ChatScrollAnchor } from '@/components/chat/ChatScrollAnchor';
@@ -37,7 +37,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     'ai-token',
     null,
   );
-  const { submitUserMessage } = useActions<typeof AI>();
+  const { submitUserMessage } = useActions<typeof AIProvider>();
 
   const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW);
   const [previewTokenInput, setPreviewTokenInput] = useState(
@@ -63,7 +63,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     },
   });
 
-  const [rawMessages, setMessages] = useUIState<typeof AI>();
+  const [rawMessages, setMessages] = useUIState<typeof AIProvider>();
   const messages = rawMessages.map(message => ({
     ...message,
     id: message.id.toString(),
