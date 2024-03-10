@@ -2,6 +2,7 @@
 
 import { openai } from '@/app/openai';
 import { ChatMessage } from '@/components/chat/ChatMessage';
+import { Character } from '@/domain/core/Character';
 import {
   appendMessage,
   appendNewMessage,
@@ -49,12 +50,25 @@ async function submitUserMessage(userInput: string) {
     },
     tools: {
       get_character_info: {
-        description: 'Get information about a character in The Iliad',
+        description:
+          'Get information about a character in The Iliad. The response should use the same language as the input, which can be either English or Spanish.',
         parameters: z
           .object({
+            language: z
+              .enum(['en', 'es'])
+              .optional()
+              .describe('The language of the input'),
             name: z.string().describe('The name of the character'),
+            originalGreekName: z
+              .string()
+              .optional()
+              .describe('The original Greek name of the character'),
+            mortality: z
+              .enum(['Mortal', 'God', 'Titan'])
+              .optional()
+              .describe('The mortality of the character'),
             side: z
-              .enum(['Greek', 'Trojan'])
+              .enum(['Greek', 'Trojan', 'None'])
               .describe('The side of the character'),
             origin: z.string().describe('The city of origin of the character'),
             father: z.string().describe('The father of the character'),
@@ -65,19 +79,11 @@ async function submitUserMessage(userInput: string) {
               ),
           })
           .required(),
-        render: async function* ({
-          name,
-          side,
-          origin,
-          father,
-          survives,
-        }: {
-          name: string;
-          side: 'Greek' | 'Trojan';
-          origin: string;
-          father: string;
-          survives: boolean;
-        }) {
+        render: async function* (
+          props: Character & {
+            language: 'en' | 'es';
+          },
+        ) {
           yield (
             <div className="p-2 bg-gray-500 rounded-md w-48 h-16">
               <p>Loading...</p>
@@ -87,20 +93,24 @@ async function submitUserMessage(userInput: string) {
           aiState.done(
             appendNewMessage(aiState.get(), {
               role: 'assistant',
-              content: JSON.stringify({ name, side, origin, father, survives }),
+              content: JSON.stringify(props),
               name: 'get_character_info',
             }),
           );
 
           return (
             <div className="p-2 bg-gray-900 space-y-2 rounded-md">
-              <h5 className="text-white text-lg">{name}</h5>
+              <h5 className="text-white text-lg">{props.name}</h5>
+              <h6 className="text-white text-sm">
+                Original Greek Name: {props.originalGreekName}
+              </h6>
               <div>
-                <p className="text-white">Side: {side}</p>
-                <p className="text-white">Origin: {origin}</p>
-                <p className="text-white">Father: {father}</p>
+                <p className="text-white">Mortality: {props.mortality}</p>
+                <p className="text-white">Side: {props.side}</p>
+                <p className="text-white">Origin: {props.origin}</p>
+                <p className="text-white">Father: {props.father}</p>
                 <p className="text-white">
-                  Survives: {survives ? 'Yes' : 'No'}
+                  Survives: {props.survives ? 'Yes' : 'No'}
                 </p>
               </div>
             </div>
