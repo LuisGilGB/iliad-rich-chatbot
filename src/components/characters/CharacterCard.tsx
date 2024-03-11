@@ -22,7 +22,7 @@ const CharacterCard = ({ character, className }: CharacterCardProps) => {
         className,
       )}
     >
-      <div className="flex flex-col h-full bg-white bg-/20">
+      <div className="flex flex-col h-full bg-white/20">
         <div className="">
           <h5 className="text-2xl font-bold text-white">{character.name}</h5>
           <p className="text-lg text-white">{character.originalGreekName}</p>
