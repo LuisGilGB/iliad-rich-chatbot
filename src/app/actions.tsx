@@ -1,6 +1,7 @@
 'use server';
 
 import { openai } from '@/app/openai';
+import CharacterCard from '@/components/characters/CharacterCard';
 import { ChatMessage } from '@/components/chat/ChatMessage';
 import { Character } from '@/domain/core/Character';
 import {
@@ -98,23 +99,7 @@ async function submitUserMessage(userInput: string) {
             }),
           );
 
-          return (
-            <div className="p-2 bg-gray-900 space-y-2 rounded-md">
-              <h5 className="text-white text-lg">{props.name}</h5>
-              <h6 className="text-white text-sm">
-                Original Greek Name: {props.originalGreekName}
-              </h6>
-              <div>
-                <p className="text-white">Mortality: {props.mortality}</p>
-                <p className="text-white">Side: {props.side}</p>
-                <p className="text-white">Origin: {props.origin}</p>
-                <p className="text-white">Father: {props.father}</p>
-                <p className="text-white">
-                  Survives: {props.survives ? 'Yes' : 'No'}
-                </p>
-              </div>
-            </div>
-          );
+          return <CharacterCard character={props} className="w-1/2" />;
         },
       },
     },
