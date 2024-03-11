@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from '@/components/ui/Dialog';
 import { IconSpinner } from '@/components/ui/icons';
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard';
 import { type Chat, ServerActionResult } from '@/lib/types';

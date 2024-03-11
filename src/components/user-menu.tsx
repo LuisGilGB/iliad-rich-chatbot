@@ -1,26 +1,25 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import { type Session } from 'next-auth'
-import { signOut } from 'next-auth/react'
-
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { IconExternalLink } from '@/components/ui/icons'
+  DropdownMenuTrigger,
+} from '@/components/ui/DropdownMenu';
+import { IconExternalLink } from '@/components/ui/icons';
+import { type Session } from 'next-auth';
+import { signOut } from 'next-auth/react';
+import Image from 'next/image';
 
 export interface UserMenuProps {
-  user: Session['user']
+  user: Session['user'];
 }
 
 function getUserInitials(name: string) {
-  const [firstName, lastName] = name.split(' ')
-  return lastName ? `${firstName[0]}${lastName[0]}` : firstName.slice(0, 2)
+  const [firstName, lastName] = name.split(' ');
+  return lastName ? `${firstName[0]}${lastName[0]}` : firstName.slice(0, 2);
 }
 
 export function UserMenu({ user }: UserMenuProps) {
@@ -65,7 +64,7 @@ export function UserMenu({ user }: UserMenuProps) {
           <DropdownMenuItem
             onClick={() =>
               signOut({
-                callbackUrl: '/'
+                callbackUrl: '/',
               })
             }
             className="text-xs"
@@ -75,5 +74,5 @@ export function UserMenu({ user }: UserMenuProps) {
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
-  )
+  );
 }

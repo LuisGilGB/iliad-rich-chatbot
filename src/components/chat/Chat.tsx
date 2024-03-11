@@ -12,7 +12,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from '@/components/ui/Dialog';
 import { useLocalStorage } from '@/lib/hooks/use-local-storage';
 
 import { cn } from '@/lib/utils';
