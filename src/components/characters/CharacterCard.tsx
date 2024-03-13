@@ -22,22 +22,34 @@ const CharacterCard = ({ character, className }: CharacterCardProps) => {
         className,
       )}
     >
-      <div className="flex flex-col h-full bg-white/20">
-        <div className="">
+      <div className="flex flex-col h-full bg-white/20 gap-2 text-white">
+        <section
+          className={cn(
+            'self-center flex flex-col items-center text-center px-4 py-1',
+            BACKGROUND_COLOR_SIDE_MAP[character.side],
+          )}
+        >
           <h5 className="text-2xl font-bold text-white">{character.name}</h5>
           <p className="text-lg text-white">{character.originalGreekName}</p>
-        </div>
-        <div className="flex-1">
-          <p className="text-white">Mortality: {character.mortality}</p>
-          <p className="text-white">Origin: {character.origin}</p>
-          <p className="text-white">Father: {character.father}</p>
-          <p className="text-white">
-            Survives: {character.survives ? 'Yes' : 'No'}
+        </section>
+        <section className="flex-1 flex flex-col justify-end items-center">
+          <section className="flex gap-4 self-stretch">
+            <section className="flex-1 flex flex-col gap-1 items-center text-center">
+              <p className="text-sm">Origin</p>
+              <p>{character.origin}</p>
+            </section>
+            <section className="flex-1 flex flex-col gap-1 items-center text-center">
+              <p className="text-sm">Father</p>
+              <p>{character.father}</p>
+            </section>
+          </section>
+        </section>
+        <section className="flex justify-between px-2">
+          <p className="font-bold text-white">{character.mortality}</p>
+          <p className="font-bold text-white">
+            {character.side === Side.None ? 'Neutral' : character.side}
           </p>
-        </div>
-        <div className="flex justify-end">
-          <p className="text-lg font-bold text-white">{character.side}</p>
-        </div>
+        </section>
       </div>
     </div>
   );
