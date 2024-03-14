@@ -1,7 +1,7 @@
 'use server';
 
 import { openai } from '@/app/openai';
-import CharacterCard from '@/components/characters/CharacterCard';
+import CharacterCard from '@/components/characters/card/CharacterCard';
 import { ChatMessage } from '@/components/chat/ChatMessage';
 import { Character } from '@/domain/core/Character';
 import {
