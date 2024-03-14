@@ -99,7 +99,9 @@ async function submitUserMessage(userInput: string) {
             }),
           );
 
-          return <CharacterCard character={props} className="w-1/2" />;
+          return (
+            <CharacterCard character={props} className="w-full md:w-1/2" />
+          );
         },
       },
     },

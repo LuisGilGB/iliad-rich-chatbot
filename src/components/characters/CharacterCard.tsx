@@ -25,7 +25,7 @@ const CharacterCard = ({ character, className }: CharacterCardProps) => {
       <div className="flex flex-col h-full bg-white/20 gap-2 text-white">
         <section
           className={cn(
-            'self-center flex flex-col items-center text-center px-4 py-1',
+            'self-center flex flex-col items-center text-center px-4 pb-1',
             BACKGROUND_COLOR_SIDE_MAP[character.side],
           )}
         >
