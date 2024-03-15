@@ -24,6 +24,16 @@ async function submitUserMessage(userInput: string) {
     appendNewMessage(aiState.get(), { role: 'user', content: userInput }),
   );
 
+  //Use openai to call dall-e
+  const imageResponse = await openai.images.generate({
+    prompt:
+      'A card game realistic and violent illustration of an epic action of a warrior in the Trojan War during a battle',
+    model: 'dall-e-2',
+    n: 1,
+    response_format: 'url',
+    size: '256x256',
+  });
+
   // render() returns a stream of UI components
   const ui = render({
     model: 'gpt-3.5-turbo',
@@ -102,7 +112,11 @@ async function submitUserMessage(userInput: string) {
 
           return (
             <ZTranslator>
-              <CharacterCard character={props} className="w-full md:w-1/2" />
+              <CharacterCard
+                character={props}
+                imageSrc={imageResponse.data[0].url as string}
+                className="w-full md:w-1/2"
+              />
             </ZTranslator>
           );
         },

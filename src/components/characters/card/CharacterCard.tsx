@@ -9,6 +9,7 @@ import CharacterCardFront from './CharacterCardFront';
 
 interface CharacterCardProps {
   character: Character;
+  imageSrc: string;
   className?: string;
 }
 
@@ -16,13 +17,18 @@ const flip: MouseEventHandler<HTMLDivElement> = event => {
   event.currentTarget.classList.toggle(styles.flipped);
 };
 
-const CharacterCard = ({ character, className }: CharacterCardProps) => (
+const CharacterCard = ({
+  character,
+  imageSrc,
+  className,
+}: CharacterCardProps) => (
   <div
     className={cn('aspect-[5/7] rounded-lg bg-white', styles.root, className)}
     onClick={flip}
   >
     <CharacterCardFront
       character={character}
+      imageSrc={imageSrc}
       className={cn(
         styles.face,
         styles.front,
