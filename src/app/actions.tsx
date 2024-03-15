@@ -24,16 +24,6 @@ async function submitUserMessage(userInput: string) {
     appendNewMessage(aiState.get(), { role: 'user', content: userInput }),
   );
 
-  //Use openai to call dall-e
-  const imageResponse = await openai.images.generate({
-    prompt:
-      'A card game realistic and violent illustration of an epic action of a warrior in the Trojan War during a battle',
-    model: 'dall-e-2',
-    n: 1,
-    response_format: 'url',
-    size: '256x256',
-  });
-
   // render() returns a stream of UI components
   const ui = render({
     model: 'gpt-3.5-turbo',
@@ -110,15 +100,33 @@ async function submitUserMessage(userInput: string) {
             }),
           );
 
-          return (
-            <ZTranslator>
-              <CharacterCard
-                character={props}
-                imageSrc={imageResponse.data[0].url as string}
-                className="w-full md:w-1/2"
-              />
-            </ZTranslator>
-          );
+          try {
+            //Use openai to call dall-e
+            const imageResponse = await openai.images.generate({
+              prompt: `A card game realistic and violent illustration of ${props.name} from The Iliad in a fight scene during the Trojan War, preferably in an actual scene from the Homeric poem. The illustration must look similar to those of the Magic card game, from Wizards of the Coast.`,
+              model: 'dall-e-2',
+              n: 1,
+              response_format: 'url',
+              size: '256x256',
+            });
+
+            return (
+              <ZTranslator>
+                <CharacterCard
+                  character={props}
+                  imageSrc={imageResponse.data[0].url as string}
+                  className="w-full md:w-1/2"
+                />
+              </ZTranslator>
+            );
+          } catch (error) {
+            console.error(error);
+            return (
+              <div className="p-2 bg-red-500 rounded-md w-48 h-16">
+                <p>Error</p>
+              </div>
+            );
+          }
         },
       },
     },
