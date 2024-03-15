@@ -1,7 +1,7 @@
 .root {
-  --perspective: 1000px;
+  --perspective: 20px;
   transform-style: preserve-3d;
-  transition: transform 0.5s ease-in-out
+  transition: transform 0.5s ease-in-out;
 }
 
 .root:hover {

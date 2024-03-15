@@ -1,0 +1,24 @@
+.root {
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.root.flipped {
+  transform: rotateY(180deg);
+}
+
+.root .face {
+  --face-padding: 0px;
+  position: absolute;
+  top: var(--face-padding);
+  left: var(--face-padding);
+  right: var(--face-padding);
+  bottom: var(--face-padding);
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.face.back {
+  transform: rotateY(180deg);
+}

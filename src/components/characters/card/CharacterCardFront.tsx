@@ -12,13 +12,7 @@ const CharacterCardFront = ({
   character,
   className,
 }: CharacterCardFrontProps) => (
-  <div
-    className={cn(
-      'aspect-[5/7] p-4 rounded-lg drop-shadow-xl drop-shadow-gray-500 hover:scale-105 transition-transform',
-      BACKGROUND_COLOR_SIDE_MAP[character.side],
-      className,
-    )}
-  >
+  <div className={cn('p-4 rounded-lg', className)}>
     <div className="flex flex-col h-full bg-white/20 gap-2 text-white">
       <section
         className={cn(

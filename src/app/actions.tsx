@@ -3,6 +3,7 @@
 import { openai } from '@/app/openai';
 import CharacterCard from '@/components/characters/card/CharacterCard';
 import { ChatMessage } from '@/components/chat/ChatMessage';
+import ZTranslator from '@/components/visual-effects/ZTranslator';
 import { Character } from '@/domain/core/Character';
 import {
   appendMessage,
@@ -100,7 +101,9 @@ async function submitUserMessage(userInput: string) {
           );
 
           return (
-            <CharacterCard character={props} className="w-full md:w-1/2" />
+            <ZTranslator>
+              <CharacterCard character={props} className="w-full md:w-1/2" />
+            </ZTranslator>
           );
         },
       },
