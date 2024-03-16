@@ -110,11 +110,19 @@ async function submitUserMessage(userInput: string) {
               size: '256x256',
             });
 
+            if (!imageResponse.data?.[0].url) {
+              return (
+                <div className="p-2 bg-red-500 rounded-md w-48 h-16">
+                  <p>An error happened retrieving the image</p>
+                </div>
+              );
+            }
+
             return (
               <ZTranslator>
                 <CharacterCard
                   character={props}
-                  imageSrc={imageResponse.data[0].url as string}
+                  imageSrc={imageResponse.data[0].url}
                   className="w-full md:w-1/2"
                 />
               </ZTranslator>

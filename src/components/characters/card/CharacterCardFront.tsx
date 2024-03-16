@@ -19,7 +19,7 @@ const CharacterCardFront = ({
       <img
         src={imageSrc}
         alt={character.name}
-        className="absolute size-full opacity-70 inset-0 object-cover object-center"
+        className="absolute size-full opacity-90 inset-0 object-cover object-center"
       />
       <div className="absolute size-full flex flex-col h-full bg-white/20 gap-2 text-white z-10">
         <section
