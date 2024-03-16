@@ -1,5 +1,4 @@
 .root {
-  --perspective: 20px;
+  --perspective: 1000px;
   transform-style: preserve-3d;
-  transition: transform 0.5s ease-in-out;
 }

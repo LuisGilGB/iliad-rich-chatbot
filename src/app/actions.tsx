@@ -103,7 +103,7 @@ async function submitUserMessage(userInput: string) {
           try {
             //Use openai to call dall-e
             const imageResponse = await openai.images.generate({
-              prompt: `A card game realistic and violent illustration of ${props.name} from The Iliad in a fight scene during the Trojan War, preferably in an actual scene from the Homeric poem. The illustration must look similar to those of the Magic card game, from Wizards of the Coast.`,
+              prompt: `A card game realistic and violent illustration of ${props.name}, whose father was ${props.father}, from The Iliad in a fight scene during the Trojan War, preferably in an actual scene from the Homeric poem.`,
               model: 'dall-e-2',
               n: 1,
               response_format: 'url',
