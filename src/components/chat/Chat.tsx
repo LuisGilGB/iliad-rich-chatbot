@@ -1,10 +1,10 @@
 'use client';
 
 import { AIProvider } from '@/app/actions';
+import { ChatEmptyScreen } from '@/components/chat/ChatEmptyScreen';
 import { ChatList } from '@/components/chat/ChatList';
 import { ChatMessage } from '@/components/chat/ChatMessage';
 import { ChatPanel } from '@/components/chat/ChatPanel';
-import { EmptyScreen } from '@/components/empty-screen';
 import {
   Dialog,
   DialogContent,
@@ -95,7 +95,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
             <ChatScrollAnchor trackVisibility={isLoading} />
           </>
         ) : (
-          <EmptyScreen setInput={setInput} />
+          <ChatEmptyScreen setInput={setInput} />
         )}
       </div>
       <ChatPanel
