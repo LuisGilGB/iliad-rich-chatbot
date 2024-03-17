@@ -1,7 +1,6 @@
 import { AIProvider } from '@/app/actions';
 import { Header } from '@/components/header';
 import { Providers } from '@/components/providers';
-import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { cn } from '@/lib/utils';
 import { GeistMono } from 'geist/font/mono';
 
@@ -58,7 +57,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 {children}
               </main>
             </div>
-            <TailwindIndicator />
           </Providers>
         </AIProvider>
       </body>

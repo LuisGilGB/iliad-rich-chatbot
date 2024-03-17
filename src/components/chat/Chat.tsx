@@ -19,7 +19,7 @@ import { cn } from '@/lib/utils';
 import { createNewMessage } from '@/usecases/chat.usecases';
 import { type Message, useChat } from 'ai/react';
 import { useActions, useUIState } from 'ai/rsc';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { Button } from '../ui/button';
@@ -33,7 +33,6 @@ export interface ChatProps extends React.ComponentProps<'div'> {
 }
 
 export function Chat({ id, initialMessages, className }: ChatProps) {
-  const router = useRouter();
   const path = usePathname();
   const [previewToken, setPreviewToken] = useLocalStorage<string | null>(
     'ai-token',
