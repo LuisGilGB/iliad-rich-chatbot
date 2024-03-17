@@ -1,14 +1,14 @@
-import React from 'react'
+import { ExternalLink } from '@/components/ExternalLink';
 
-import { cn } from '@/lib/utils'
-import { ExternalLink } from '@/components/external-link'
+import { cn } from '@/lib/utils';
+import React from 'react';
 
 export function FooterText({ className, ...props }: React.ComponentProps<'p'>) {
   return (
     <p
       className={cn(
         'px-2 text-center text-xs leading-normal text-muted-foreground',
-        className
+        className,
       )}
       {...props}
     >
@@ -19,5 +19,5 @@ export function FooterText({ className, ...props }: React.ComponentProps<'p'>) {
       </ExternalLink>
       .
     </p>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { ExternalLink } from '@/components/external-link';
+import { ExternalLink } from '@/components/ExternalLink';
 
 import { Button } from '@/components/ui/button';
 import { IconArrowRight } from '@/components/ui/icons';

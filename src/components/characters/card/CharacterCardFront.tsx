@@ -21,7 +21,7 @@ const CharacterCardFront = ({
         alt={character.name}
         className="absolute size-full opacity-90 inset-0 object-cover object-center"
       />
-      <div className="absolute size-full flex flex-col h-full bg-white/20 gap-2 text-white z-10">
+      <div className="absolute size-full flex flex-col h-full gap-2 text-white z-10">
         <section
           className={cn(
             'self-center flex flex-col items-center text-center px-4 pb-1 rounded-b-lg',
@@ -32,7 +32,7 @@ const CharacterCardFront = ({
           <p className="text-lg text-white">{character.originalGreekName}</p>
         </section>
         <section className="flex-1 flex flex-col justify-end items-center">
-          <section className="flex gap-4 self-stretch bg-white/20 py-1">
+          <section className="flex gap-4 self-stretch bg-gray-900/20 py-1">
             <section className="flex-1 flex flex-col gap-1 items-center text-center">
               <p className="text-sm">Origin</p>
               <p className="font-bold">{character.origin}</p>
