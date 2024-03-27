@@ -1,6 +1,6 @@
 'use client';
 
-import { AIProvider } from '@/app/actions';
+import { AIProviderType } from '@/app/state.types';
 import { ChatEmptyScreen } from '@/components/chat/ChatEmptyScreen';
 import { ChatList } from '@/components/chat/ChatList';
 import { ChatMessage } from '@/components/chat/ChatMessage';
@@ -38,7 +38,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     'ai-token',
     null,
   );
-  const { submitUserMessage } = useActions<typeof AIProvider>();
+  const { submitUserMessage } = useActions<AIProviderType>();
 
   const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW);
   const [previewTokenInput, setPreviewTokenInput] = useState(
@@ -64,7 +64,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     },
   });
 
-  const [messages, setMessages] = useUIState<typeof AIProvider>();
+  const [messages, setMessages] = useUIState<AIProviderType>();
 
   const onSubmit = useCallback(
     async (message: string) => {

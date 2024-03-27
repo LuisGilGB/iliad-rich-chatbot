@@ -1,4 +1,3 @@
-import { AIProvider } from '@/app/actions';
 import { Header } from '@/components/header';
 import { Providers } from '@/components/providers';
 import { cn } from '@/lib/utils';
@@ -7,6 +6,7 @@ import { GeistMono } from 'geist/font/mono';
 import '@/app/globals.css';
 import { GeistSans } from 'geist/font/sans';
 import { Toaster } from 'react-hot-toast';
+import AIProvider from './AIProvider';
 
 export const metadata = {
   metadataBase: new URL(`https://${process.env.VERCEL_URL}`),

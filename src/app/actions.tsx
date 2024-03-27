@@ -1,6 +1,7 @@
 'use server';
 
 import { openai } from '@/app/openai';
+import { AIProviderType } from '@/app/state.types';
 import CharacterCard from '@/components/characters/card/CharacterCard';
 import { ChatMessage } from '@/components/chat/ChatMessage';
 import ZTranslator from '@/components/visual-effects/ZTranslator';
@@ -11,13 +12,13 @@ import {
   createNewMessage,
 } from '@/usecases/chat.usecases';
 
-import { createAI, getMutableAIState, render } from 'ai/rsc';
+import { getMutableAIState, render } from 'ai/rsc';
 import { z } from 'zod';
 
-async function submitUserMessage(userInput: string) {
+export async function submitUserMessage(userInput: string) {
   'use server';
 
-  const aiState = getMutableAIState<typeof AIProvider>();
+  const aiState = getMutableAIState<AIProviderType>();
 
   // Update AI state with new message.
   aiState.update(
@@ -145,28 +146,3 @@ async function submitUserMessage(userInput: string) {
     display: ui,
   };
 }
-
-// Define the initial state of the AI. It can be any JSON object.
-const initialAIState: {
-  role: 'user' | 'assistant' | 'system' | 'function';
-  content: string;
-  id: string;
-  name?: string;
-}[] = [];
-
-// The initial UI state that the client will keep track of.
-const initialUIState: {
-  id: number;
-  display: React.ReactNode;
-}[] = [];
-
-// AI is a provider you wrap your application with so you can access AI and UI state in your components.
-export const AIProvider = createAI({
-  actions: {
-    submitUserMessage,
-  },
-  // Each state can be any shape of object, but for chat applications
-  // it makes sense to have an array of messages. Or you may prefer something like { id: number, messages: Message[] }
-  initialUIState,
-  initialAIState,
-});
