@@ -10,7 +10,7 @@ export type AIState = {
 
 export type UISTateItem = {
   id: number;
-  display: React.ReactNode;
+  display: React.ReactElement;
 };
 
 export type UIState = UISTateItem[];
@@ -21,6 +21,7 @@ export type AIProviderType = ReturnType<
     UIState,
     {
       submitUserMessage: (userInput: string) => Promise<UISTateItem>;
+      reloadAssistantResponse: () => Promise<UISTateItem>;
     }
   >
 >;

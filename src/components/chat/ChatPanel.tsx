@@ -11,13 +11,11 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 
 export interface ChatPanelProps
-  extends Pick<
-    UseChatHelpers,
-    'isLoading' | 'reload' | 'stop' | 'input' | 'setInput'
-  > {
+  extends Pick<UseChatHelpers, 'isLoading' | 'stop' | 'input' | 'setInput'> {
   id?: string;
   title?: string;
   messages: { id: number; display: ReactNode }[];
+  onReloadClick: () => void;
   onSubmit: (content: string) => Promise<unknown>;
 }
 
@@ -26,7 +24,7 @@ export function ChatPanel({
   title,
   isLoading,
   stop,
-  reload,
+  onReloadClick,
   input,
   setInput,
   messages,
@@ -51,7 +49,7 @@ export function ChatPanel({
           ) : (
             messages?.length >= 2 && (
               <div className="flex space-x-2">
-                <Button variant="outline" onClick={() => reload()}>
+                <Button variant="outline" onClick={onReloadClick}>
                   <IconRefresh className="mr-2" />
                   Regenerate response
                 </Button>

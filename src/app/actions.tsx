@@ -12,10 +12,10 @@ import {
   createNewMessage,
 } from '@/usecases/chat.usecases';
 
-import { getMutableAIState, render } from 'ai/rsc';
+import { createStreamableUI, getMutableAIState, render } from 'ai/rsc';
 import { z } from 'zod';
 
-export async function submitUserMessage(userInput: string) {
+export const submitUserMessage = async (userInput: string) => {
   'use server';
 
   const aiState = getMutableAIState<AIProviderType>();
@@ -145,4 +145,52 @@ export async function submitUserMessage(userInput: string) {
     id: Date.now(),
     display: ui,
   };
-}
+};
+
+export const reloadAssistantResponse = async () => {
+  'use server';
+
+  const aiState = getMutableAIState<AIProviderType>();
+
+  const lastUserMessage = aiState
+    .get()
+    .findLast(message => message.role === 'user');
+
+  if (!lastUserMessage) {
+    return;
+  }
+
+  const lastAssistantMessage = aiState
+    .get()
+    .findLast(message => message.role === 'assistant');
+
+  if (lastAssistantMessage) {
+    aiState.update(
+      appendMessage(
+        aiState.get().filter(message => message.id !== lastAssistantMessage.id),
+        {
+          ...lastAssistantMessage,
+          content: 'Regenerating response...',
+        },
+      ),
+    );
+  }
+
+  const regeneratedResponse = createStreamableUI(<div>Regen...</div>);
+
+  (async () => {
+    try {
+      regeneratedResponse.update(<div>Regen regen...</div>);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      regeneratedResponse.done(<div>Regenerated</div>);
+    } catch (error) {
+      console.error(error);
+      regeneratedResponse.done(<div>Regen failed...</div>);
+    }
+  })();
+
+  return {
+    id: Date.now(),
+    display: regeneratedResponse.value,
+  };
+};

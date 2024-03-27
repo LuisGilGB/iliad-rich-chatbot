@@ -1,4 +1,4 @@
-import { submitUserMessage } from '@/app/actions';
+import { reloadAssistantResponse, submitUserMessage } from '@/app/actions';
 import { AIProviderType, AIState, UIState } from '@/app/state.types';
 import { createAI } from 'ai/rsc';
 
@@ -12,6 +12,7 @@ const initialUIState: UIState = [];
 export const AIProvider: AIProviderType = createAI({
   actions: {
     submitUserMessage,
+    reloadAssistantResponse,
   },
   // Each state can be any shape of object, but for chat applications
   // it makes sense to have an array of messages. Or you may prefer something like { id: number, messages: Message[] }

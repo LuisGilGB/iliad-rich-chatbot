@@ -38,14 +38,15 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     'ai-token',
     null,
   );
-  const { submitUserMessage } = useActions<AIProviderType>();
+  const { submitUserMessage, reloadAssistantResponse } =
+    useActions<AIProviderType>();
 
   const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW);
   const [previewTokenInput, setPreviewTokenInput] = useState(
     previewToken ?? '',
   );
 
-  const { reload, stop, isLoading, input, setInput } = useChat({
+  const { stop, isLoading, input, setInput } = useChat({
     initialMessages,
     id,
     body: {
@@ -65,6 +66,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   });
 
   const [messages, setMessages] = useUIState<AIProviderType>();
+  console.log('messages', messages);
 
   const onSubmit = useCallback(
     async (message: string) => {
@@ -85,6 +87,10 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     [setMessages, submitUserMessage],
   );
 
+  const onReloadClick = useCallback(() => {
+    reloadAssistantResponse();
+  }, [reloadAssistantResponse]);
+
   return (
     <>
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
@@ -101,10 +107,10 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         id={id}
         isLoading={isLoading}
         stop={stop}
-        reload={reload}
         messages={messages}
         input={input}
         setInput={setInput}
+        onReloadClick={onReloadClick}
         onSubmit={onSubmit}
       />
 
