@@ -15,6 +15,12 @@ import {
 import { createStreamableUI, getMutableAIState, render } from 'ai/rsc';
 import { z } from 'zod';
 
+const StandardLoader = () => (
+  <div className="p-2 bg-gray-500 rounded-md w-48 h-16">
+    <p>Loading...</p>
+  </div>
+);
+
 export const submitUserMessage = async (userInput: string) => {
   'use server';
 
@@ -29,6 +35,7 @@ export const submitUserMessage = async (userInput: string) => {
   const ui = render({
     model: 'gpt-3.5-turbo',
     provider: openai,
+    initial: <StandardLoader />,
     messages: [
       {
         role: 'system',
@@ -87,11 +94,7 @@ export const submitUserMessage = async (userInput: string) => {
             language: 'en' | 'es';
           },
         ) {
-          yield (
-            <div className="p-2 bg-gray-500 rounded-md w-48 h-16">
-              <p>Loading...</p>
-            </div>
-          );
+          yield <StandardLoader />;
 
           aiState.done(
             appendNewMessage(aiState.get(), {
