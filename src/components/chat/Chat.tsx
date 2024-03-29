@@ -66,7 +66,6 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   });
 
   const [messages, setMessages] = useUIState<AIProviderType>();
-  console.log('messages', messages);
 
   const onSubmit = useCallback(
     async (message: string) => {

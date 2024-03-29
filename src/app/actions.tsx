@@ -179,21 +179,21 @@ export const reloadAssistantResponse = async () => {
     );
   }
 
-  const regeneratedResponse = createStreamableUI(<div>Regen...</div>);
+  const uiStream = createStreamableUI(<div>Regen...</div>);
 
   (async () => {
     try {
-      regeneratedResponse.update(<div>Regen regen...</div>);
+      uiStream.update(<div>Regen regen...</div>);
       await new Promise(resolve => setTimeout(resolve, 1000));
-      regeneratedResponse.done(<div>Regenerated</div>);
+      uiStream.done(<div>Regenerated</div>);
     } catch (error) {
       console.error(error);
-      regeneratedResponse.done(<div>Regen failed...</div>);
+      uiStream.done(<div>Regen failed...</div>);
     }
   })();
 
   return {
     id: Date.now(),
-    display: regeneratedResponse.value,
+    display: uiStream.value,
   };
 };
