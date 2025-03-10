@@ -8,27 +8,16 @@ import { ChatPanel } from '@/components/chat/ChatPanel';
 
 import { cn } from '@/lib/utils';
 import { createNewMessage } from '@/usecases/chat.usecases';
-import { type Message, useChat } from 'ai/react';
 import { useActions, useUIState } from 'ai/rsc';
-import { usePathname } from 'next/navigation';
 import { useCallback } from 'react';
 import { ChatScrollAnchor } from './ChatScrollAnchor';
 
 export interface ChatProps extends React.ComponentProps<'div'> {
-  initialMessages?: Message[];
   id?: string;
 }
 
-export function Chat({ id, initialMessages, className }: ChatProps) {
-  const path = usePathname();
-  const { submitUserMessage, reloadAssistantResponse } =
-    useActions<AIProviderType>();
-
-  const { stop, isLoading, input, setInput } = useChat({
-    initialMessages,
-    id,
-  });
-
+export const Chat = ({ className }: ChatProps) => {
+  const { submitUserMessage } = useActions<AIProviderType>();
   const [messages, setMessages] = useUIState<AIProviderType>();
 
   const onSubmit = useCallback(
@@ -53,9 +42,6 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     [setMessages, submitUserMessage],
   );
 
-  const onReloadClick = useCallback(() => {
-    reloadAssistantResponse();
-  }, [reloadAssistantResponse]);
 
   return (
     <>
@@ -63,20 +49,13 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         {messages.length ? (
           <>
             <ChatList messages={messages} />
-            <ChatScrollAnchor trackVisibility={isLoading} />
+            <ChatScrollAnchor messages={messages} />
           </>
         ) : (
           <ChatEmptyScreen onSuggestionClick={onSubmit} />
         )}
       </div>
       <ChatPanel
-        id={id}
-        isLoading={isLoading}
-        stop={stop}
-        messages={messages}
-        input={input}
-        setInput={setInput}
-        onReloadClick={onReloadClick}
         onSubmit={onSubmit}
       />
     </>

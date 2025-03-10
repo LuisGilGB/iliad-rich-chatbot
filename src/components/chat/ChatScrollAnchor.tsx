@@ -3,27 +3,28 @@
 import * as React from 'react'
 import { useInView } from 'react-intersection-observer'
 
-import { useAtBottom } from '@/lib/hooks/use-at-bottom'
 
 interface ChatScrollAnchorProps {
-  trackVisibility?: boolean
+  messages?: any[]
 }
 
-export function ChatScrollAnchor({ trackVisibility }: ChatScrollAnchorProps) {
-  const isAtBottom = useAtBottom()
-  const { ref, entry, inView } = useInView({
-    trackVisibility,
-    delay: 100,
-    rootMargin: '0px 0px -150px 0px'
-  })
+export const ChatScrollAnchor = ({ messages = [] }: ChatScrollAnchorProps) => {
+  const { ref } = useInView()
+  const scrollTargetRef = React.useRef<HTMLDivElement>(null)
 
+  // Efecto para hacer scroll al último mensaje cuando cambia la lista de mensajes
   React.useEffect(() => {
-    if (isAtBottom && trackVisibility && !inView) {
-      entry?.target.scrollIntoView({
+    if (messages.length > 0 && scrollTargetRef.current) {
+      scrollTargetRef.current.scrollIntoView({
+        behavior: 'smooth',
         block: 'start'
       })
     }
-  }, [inView, entry, isAtBottom, trackVisibility])
+  }, [messages])
 
-  return <div ref={ref} className="h-px w-full" />
+  return (
+    <div ref={scrollTargetRef} className="h-px w-full">
+      <div ref={ref} />
+    </div>
+  )
 }
