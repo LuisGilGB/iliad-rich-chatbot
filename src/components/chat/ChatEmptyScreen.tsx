@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 const exampleBlocks = [
   {
     heading: 'Achilles',
-    message: 'Tell me, o muse, of the man who wandered far and wide...',
+    message: 'Sing, O goddess, the anger of Achilles son of Peleus, that brought countless ills upon the Achaeans.',
   },
   {
     heading: 'Agamemnon',

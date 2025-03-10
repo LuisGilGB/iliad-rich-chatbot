@@ -24,6 +24,7 @@ export const submitUserMessage = async (userInput: string) => {
   'use server';
 
   const aiState = getMutableAIState<AIProviderType>();
+  console.dir(aiState.get());
 
   // Update AI state with new message.
   aiState.update(
@@ -33,16 +34,9 @@ export const submitUserMessage = async (userInput: string) => {
   const uiStream = streamUI({
     model: openai4oModel,
     initial: <StandardLoader />,
+    system: 'Hi! I can give you information about who is who in The Iliad. Ask me anything!',
     messages: [
-      {
-        role: 'system',
-        content:
-          'Hi! I can give you information about who is who in The Iliad. Ask me anything!',
-      },
-      {
-        role: 'user',
-        content: userInput,
-      },
+      ...aiState.get(),
     ],
     // `text` is called when an AI returns a text response (as opposed to a tool call)
     text: ({ content, done }: { content: string; done: boolean }) => {
@@ -84,9 +78,7 @@ export const submitUserMessage = async (userInput: string) => {
             father: z.string().describe('The father of the character'),
             survives: z
               .boolean()
-              .describe(
-                'Whether the character survives until the end of the poem',
-              ),
+              .describe('Whether the character survives until the end of the poem'),
           })
           .required(),
         generate: async function* (
