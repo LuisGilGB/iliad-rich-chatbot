@@ -6,14 +6,13 @@ import { type Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 interface SharePageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export async function generateMetadata({
-  params,
-}: SharePageProps): Promise<Metadata> {
+export async function generateMetadata(props: SharePageProps): Promise<Metadata> {
+  const params = await props.params;
   const chat = await getSharedChat(params.id);
 
   return {
@@ -21,7 +20,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function SharePage({ params }: SharePageProps) {
+export default async function SharePage(props: SharePageProps) {
+  const params = await props.params;
   const chat = await getSharedChat(params.id);
 
   if (!chat || !chat?.sharePath) {

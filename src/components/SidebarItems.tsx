@@ -7,7 +7,7 @@ import {
   shareChat,
 } from '@/infrastructure/repositories/chat.repository';
 import { Chat } from '@/lib/types';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 
 interface SidebarItemsProps {
   chats?: Chat[];

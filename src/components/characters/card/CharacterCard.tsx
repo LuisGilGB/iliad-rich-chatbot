@@ -23,7 +23,7 @@ const CharacterCard = ({
   className,
 }: CharacterCardProps) => (
   <div
-    className={cn('aspect-[5/7] rounded-lg bg-white', styles.root, className)}
+    className={cn('aspect-5/7 rounded-lg bg-white', styles.root, className)}
     onClick={flip}
   >
     <CharacterCardFront

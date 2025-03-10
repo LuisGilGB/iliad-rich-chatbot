@@ -5,14 +5,13 @@ import { type Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
 export interface ChatPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export async function generateMetadata({
-  params,
-}: ChatPageProps): Promise<Metadata> {
+export async function generateMetadata(props: ChatPageProps): Promise<Metadata> {
+  const params = await props.params;
   const session = await auth();
 
   if (!session?.user) {
@@ -25,7 +24,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function ChatPage({ params }: ChatPageProps) {
+export default async function ChatPage(props: ChatPageProps) {
+  const params = await props.params;
   const session = await auth();
 
   if (!session?.user) {
