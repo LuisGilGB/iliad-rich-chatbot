@@ -1,27 +1,33 @@
 import { ExternalLink } from '@/components/ExternalLink';
 
 import { Button } from '@/components/ui/button';
-import { IconArrowRight } from '@/components/ui/icons';
-import { UseChatHelpers } from 'ai/react';
 
-const exampleMessages = [
+const exampleBlocks = [
   {
     heading: 'Achilles',
-    message: 'Tell me about Achilles',
+    message: 'Tell me, o muse, of the man who wandered far and wide...',
   },
   {
     heading: 'Agamemnon',
-    message: 'Tell me about Agamemnon',
+    message: 'Tell me about the man who led the Greeks to Troy',
   },
   {
     heading: 'Hector',
-    message: `Tell me about Hector`,
+    message: `Who was the main hero of the Trojans?`,
+  },
+  {
+    heading: 'Athena',
+    message: `What was Athena's role in the Iliad?`,
   },
 ];
 
-export function ChatEmptyScreen({
-  setInput,
-}: Pick<UseChatHelpers, 'setInput'>) {
+interface ChatEmptyScreenProps {
+  onSuggestionClick: (message: string) => void;
+}
+
+const ChatEmptyScreen = ({
+  onSuggestionClick,
+}: ChatEmptyScreenProps) => {
   return (
     <div className="mx-auto max-w-2xl px-4">
       <div className="rounded-lg border bg-background p-8">
@@ -30,10 +36,10 @@ export function ChatEmptyScreen({
         </h1>
         <p className="mb-2 leading-normal text-muted-foreground">
           This is an AI chatbot app that provides information about characters
-          of The Iliad not just through test; but with rich UI elements thanks
-          to Generative UI from
+          of The Iliad not just through text; but with rich UI elements thanks
+          to React Server Components rendered and streamed using{' '}
           <ExternalLink href="https://sdk.vercel.ai/docs">
-            Vercel&apos;s AI SDK v3
+            Vercel&apos;s AI SDK v4
           </ExternalLink>
           .
         </p>
@@ -41,16 +47,20 @@ export function ChatEmptyScreen({
           You can start a conversation here or ask information about the
           following characters by just clicking on them:
         </p>
-        <div className="mt-4 flex flex-col items-start space-y-2">
-          {exampleMessages.map((message, index) => (
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {exampleBlocks.map((example) => (
             <Button
-              key={index}
-              variant="link"
-              className="h-auto p-0 text-base"
-              onClick={() => setInput(message.message)}
+              key={example.heading}
+              variant="outline"
+              className="block h-auto p-2 space-y-1 text-center cursor-pointer"
+              onClick={() => onSuggestionClick(example.message)}
             >
-              <IconArrowRight className="mr-2 text-muted-foreground" />
-              {message.heading}
+              <p className="text-base font-semibold">
+                {example.heading}
+              </p>
+              <p className="text-muted-foreground italic text-xs">
+                {example.message}
+              </p>
             </Button>
           ))}
         </div>
@@ -58,3 +68,5 @@ export function ChatEmptyScreen({
     </div>
   );
 }
+
+export default ChatEmptyScreen;
