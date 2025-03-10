@@ -1,4 +1,9 @@
 {
+  "name": "illiad-rich-chatbot",
+  "version": "0.2.0",
+  "description": "A rich chatbot for The Iliad powered by AI SDK and RSC",
+  "author": "Luis Gil Gutiérrez de la Barreda",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
