@@ -30,7 +30,7 @@ export const submitUserMessage = async (userInput: string) => {
     appendNewMessage(aiState.get(), { role: 'user', content: userInput }),
   );
 
-  const ui = streamUI({
+  const uiStream = streamUI({
     model: openai4oModel,
     initial: <StandardLoader />,
     messages: [
@@ -151,7 +151,7 @@ export const submitUserMessage = async (userInput: string) => {
 
   return {
     id: Date.now(),
-    display: ui,
+    display: (await uiStream).value,
   };
 };
 
