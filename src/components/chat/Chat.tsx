@@ -77,7 +77,10 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         ...currentMessages,
         {
           id: Date.now(),
-          display: <ChatMessage message={newMessage} />,
+          display: <ChatMessage message={{
+            ...newMessage,
+            role: 'user'
+          }} />,
         },
       ]);
       const responseMessage = await submitUserMessage(message);

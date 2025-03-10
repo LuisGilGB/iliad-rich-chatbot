@@ -1,6 +1,5 @@
 'use server';
 
-import { openai } from '@/app/openai';
 import { AIProviderType } from '@/app/state.types';
 import CharacterCard from '@/components/characters/card/CharacterCard';
 import { ChatMessage } from '@/components/chat/ChatMessage';
@@ -11,9 +10,9 @@ import {
   appendNewMessage,
   createNewMessage,
 } from '@/usecases/chat.usecases';
-
-import { createStreamableUI, getMutableAIState, render } from 'ai/rsc';
+import { createStreamableUI, getMutableAIState, streamUI } from 'ai/rsc';
 import { z } from 'zod';
+import { openai4oModel, openaiDallE2Model } from './openai';
 
 const StandardLoader = () => (
   <div className="p-2 bg-gray-500 rounded-md w-48 h-16">
@@ -31,10 +30,8 @@ export const submitUserMessage = async (userInput: string) => {
     appendNewMessage(aiState.get(), { role: 'user', content: userInput }),
   );
 
-  // render() returns a stream of UI components
-  const ui = render({
-    model: 'gpt-3.5-turbo',
-    provider: openai,
+  const ui = streamUI({
+    model: openai4oModel,
     initial: <StandardLoader />,
     messages: [
       {
@@ -56,7 +53,10 @@ export const submitUserMessage = async (userInput: string) => {
         aiState.update(appendMessage(aiState.get(), newMessage));
       }
 
-      return <ChatMessage message={newMessage} />;
+      return <ChatMessage message={{
+        ...newMessage,
+        role: 'assistant'
+      }} />;
     },
     tools: {
       get_character_info: {
@@ -89,7 +89,7 @@ export const submitUserMessage = async (userInput: string) => {
               ),
           })
           .required(),
-        render: async function* (
+        generate: async function* (
           props: Character & {
             language: 'en' | 'es';
           },
@@ -106,15 +106,20 @@ export const submitUserMessage = async (userInput: string) => {
 
           try {
             //Use openai to call dall-e
-            const imageResponse = await openai.images.generate({
+            const imageResponse = await openaiDallE2Model.doGenerate({
               prompt: `A realistic and violent illustration of ${props.name}, whose father was ${props.father}, from The Iliad in a fight scene during the Trojan War, preferably in an actual scene from the Homeric poem.`,
-              model: 'dall-e-2',
               n: 1,
-              response_format: 'url',
               size: '256x256',
+              seed: undefined,
+              aspectRatio: undefined,
+              providerOptions: {
+                openai: {
+                  response_format: 'url',
+                },
+              },
             });
 
-            if (!imageResponse.data?.[0].url) {
+            if (!imageResponse.images?.[0]) {
               return (
                 <div className="p-2 bg-red-500 rounded-md w-48 h-16">
                   <p>An error happened retrieving the image</p>
@@ -126,7 +131,7 @@ export const submitUserMessage = async (userInput: string) => {
               <ZTranslator>
                 <CharacterCard
                   character={props}
-                  imageSrc={imageResponse.data[0].url}
+                  imageSrc={imageResponse.images[0].toString()}
                   className="w-full md:w-1/2"
                 />
               </ZTranslator>

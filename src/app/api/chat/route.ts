@@ -1,5 +1,5 @@
 import config from '@/app/config'
-import { openai } from '@/app/openai'
+import { openai4oModel } from '@/app/openai'
 
 import { auth } from '@/auth'
 import { nanoid } from '@/lib/utils'
@@ -23,10 +23,10 @@ export async function POST(req: Request) {
   }
 
   if (previewToken) {
-    openai.apiKey = previewToken
+    openai4oModel.apiKey = previewToken
   }
 
-  const res = await openai.chat.completions.create({
+  const res = await openai4oModel.chat.completions.create({
     model: 'gpt-3.5-turbo',
     messages,
     temperature: 0.7,

@@ -1,5 +1,9 @@
-import OpenAI from 'openai';
+import { createOpenAI } from '@ai-sdk/openai';
 
-export const openai = new OpenAI({
+const openai = createOpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
+export const openai4oModel = openai('gpt-4o');
+
+export const openaiDallE2Model = openai.image('dall-e-2');
