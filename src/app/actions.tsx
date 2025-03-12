@@ -103,7 +103,7 @@ export const submitUserMessage = async (userInput: string) => {
             const imageResponse = await openaiDallE3Model.doGenerate({
               prompt: `A realistic and violent illustration of ${props.name}, whose father was ${props.father}, from The Iliad in a fight scene during the Trojan War, preferably in an actual scene from the Homeric poem.`,
               n: 1,
-              size: '256x256',
+              size: '1024x1792',
               seed: undefined,
               aspectRatio: undefined,
               providerOptions: {
