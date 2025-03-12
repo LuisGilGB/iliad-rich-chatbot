@@ -24,7 +24,6 @@ export const submitUserMessage = async (userInput: string) => {
   'use server';
 
   const aiState = getMutableAIState<AIProviderType>();
-  console.dir(aiState.get());
 
   // Update AI state with new message.
   aiState.update(
@@ -36,7 +35,10 @@ export const submitUserMessage = async (userInput: string) => {
     initial: <StandardLoader />,
     system: 'Hi! I can give you information about who is who in The Iliad. Ask me anything!',
     messages: [
-      ...aiState.get(),
+      ...aiState.get().map(message => ({
+        ...message,
+        role: message.role as 'user' | 'assistant'
+      })),
     ],
     // `text` is called when an AI returns a text response (as opposed to a tool call)
     text: ({ content, done }: { content: string; done: boolean }) => {
