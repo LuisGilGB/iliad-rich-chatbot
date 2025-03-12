@@ -7,3 +7,4 @@ const openai = createOpenAI({
 export const openai4oModel = openai('gpt-4o');
 
 export const openaiDallE2Model = openai.image('dall-e-2');
+export const openaiDallE3Model = openai.image('dall-e-3');

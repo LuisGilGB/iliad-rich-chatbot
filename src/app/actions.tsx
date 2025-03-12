@@ -12,7 +12,7 @@ import {
 } from '@/usecases/chat.usecases';
 import { createStreamableUI, getMutableAIState, streamUI } from 'ai/rsc';
 import { z } from 'zod';
-import { openai4oModel, openaiDallE2Model } from './openai';
+import { openai4oModel, openaiDallE3Model } from './openai';
 
 const StandardLoader = () => (
   <div className="p-2 bg-gray-500 rounded-md w-48 h-16">
@@ -100,7 +100,7 @@ export const submitUserMessage = async (userInput: string) => {
 
           try {
             //Use openai to call dall-e
-            const imageResponse = await openaiDallE2Model.doGenerate({
+            const imageResponse = await openaiDallE3Model.doGenerate({
               prompt: `A realistic and violent illustration of ${props.name}, whose father was ${props.father}, from The Iliad in a fight scene during the Trojan War, preferably in an actual scene from the Homeric poem.`,
               n: 1,
               size: '256x256',
