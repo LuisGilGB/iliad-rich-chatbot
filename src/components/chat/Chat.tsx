@@ -30,9 +30,10 @@ export const Chat = ({ className }: ChatProps) => {
         ...currentMessages,
         {
           id: Date.now(),
+          role: 'user',
           display: <ChatMessage message={{
             ...newMessage,
-            role: 'user'
+            role: 'user' // Typing issue
           }} />,
         },
       ]);

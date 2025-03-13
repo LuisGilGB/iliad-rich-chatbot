@@ -10,6 +10,7 @@ export type AIState = {
 
 export type UISTateItem = {
   id: number;
+  role: 'user' | 'assistant' | 'system' | 'function';
   display: React.ReactElement;
 };
 

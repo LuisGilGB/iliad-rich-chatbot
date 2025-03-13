@@ -34,12 +34,10 @@ export const submitUserMessage = async (userInput: string) => {
     model: openai4oModel,
     initial: <StandardLoader />,
     system: 'Hi! I can give you information about who is who in The Iliad. Ask me anything!',
-    messages: [
-      ...aiState.get().map(message => ({
-        ...message,
-        role: message.role as 'user' | 'assistant'
-      })),
-    ],
+    messages: aiState.get().map(message => ({
+      ...message,
+      role: message.role as 'user' | 'assistant'
+    })),
     // `text` is called when an AI returns a text response (as opposed to a tool call)
     text: ({ content, done }: { content: string; done: boolean }) => {
       // text can be streamed from the LLM, but we only want to close the stream with .done() when its completed.
@@ -51,7 +49,7 @@ export const submitUserMessage = async (userInput: string) => {
 
       return <ChatMessage message={{
         ...newMessage,
-        role: 'assistant'
+        role: 'assistant' // Needed for typing issues
       }} />;
     },
     tools: {

@@ -5,9 +5,9 @@ This project was initially developed as a proof of concept for **React Server Co
 
 The chatbot leverages the power of AI to provide rich, interactive, and dynamic conversational experiences. It demonstrates how to integrate AI capabilities into modern web applications using cutting-edge technologies.
 
-When the chatbot is asked about a character of The Iliad, it will render a
-card with an illustration of the character and some information about them.
-This card is rendered in the server and streamed to the client.
+When the chatbot is asked about a character of The Iliad, it will render a card with an illustration of the character and some information about them. This card is rendered in the server and streamed to the client.
+
+Keep in mind that AI SDK RSC is still experimental and bugs can be found with its use: [Vercel AI SDK RSC](https://sdk.vercel.ai/docs/ai-sdk-rsc/migrating-to-ui).
 
 ## Key Features
 - **Streamed Components**: Utilizes React Server Components for efficient data streaming and rendering.
